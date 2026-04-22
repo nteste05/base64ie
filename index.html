@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+    
+    <link rel="canonical" href="https://nteste05.github.io/base64ie/" />
+    <link rel="icon" type="image/jpeg" href="base64ie-favicon.jpeg" sizes="32x32">
+    <link rel="apple-touch-icon" sizes="180x180" href="base64ie-favicon.jpeg">
+    <link rel="manifest" href="manifest.json">
+    
+    <title>Base64IE: Aplikasi konversi gambar ke Base64 dan sebaliknya</title>
+    <meta name="description" content="Base64IE: Aplikasi konversi gambar ke Base64 dan sebaliknya dengan cepat, aman, & gratis. Ubah PNG, JPG, WebP ke kode Base64 untuk optimasi web sekarang!">
+    <meta name="keywords" content="Base64IE, Konversi Gambar ke Base64, Base64 to Image Converter, Image Encoder Base64, Image Decoder Base64">
+    <meta name="robots" content="index, follow">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nteste05.github.io/base64ie">
+    <meta property="og:title" content="Base64IE: Aplikasi konversi gambar ke Base64 dan sebaliknya">
+    <meta property="og:description" content="Base64IE: Aplikasi konversi gambar ke Base64 dan sebaliknya dengan cepat, aman, & gratis. Ubah PNG, JPG, WebP ke kode Base64 untuk optimasi web sekarang!">
+    <meta property="og:image" content="https://raw.githubusercontent.com/nteste05/base64ie/refs/heads/main/base64ie-thumb.jpeg">
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://nteste05.github.io/base64ie">
+    <meta property="twitter:title" content="Base64IE: Aplikasi konversi gambar ke Base64 dan sebaliknya">
+    <meta property="twitter:description" content="Base64IE: Aplikasi konversi gambar ke Base64 dan sebaliknya dengan cepat, aman, & gratis. Ubah PNG, JPG, WebP ke kode Base64 untuk optimasi web sekarang!">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/nteste05/base64ie/refs/heads/main/base64ie-thumb.jpeg">
+    
+    <style>
+        :root { --primary: #007bff; --success: #28a745; --bg: #f8f9fa; }
+        * {
+            box-sizing: border-box;
+        }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center;}
+        .container { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
+        h2 { text-align: center; color: #333; margin-top: 0; }
+        .section { margin-bottom: 30px; padding: 15px; border: 1px solid #eee; border-radius: 8px; }
+        h3 { font-size: 1rem; margin-top: 0; color: #555; border-left: 4px solid var(--primary); padding-left: 10px; }
+        textarea { width: 100%; height: 120px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 6px; padding: 10px; font-size: 12px; resize: none; margin: 10px 0; background: #fafafa; }
+        input[type="file"] { width: 100%; margin: 10px 0; }
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        button { flex: 1; min-width: 120px; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; color: white; }
+        .btn-blue { background: var(--primary); }
+        .btn-green { background: var(--success); }
+        .btn-copy { background: #6c757d; }
+        button:active { transform: scale(0.98); opacity: 0.9; }
+        #preview { width: 100%; border-radius: 8px; margin-top: 15px; display: none; border: 1px solid #ddd; }
+        
+        .navbar {
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .menu-btn {
+            background: none;
+            border: none;
+            color: #bbb;
+            font-size: 24px;
+            cursor: pointer;
+            margin: 0 10px 0 0;
+        }
+        
+        header h1 {
+            font-size: 16px;
+            margin:0;
+            color: #555;
+        }
+        
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            background-color: var(--bg);
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 10px;
+        }
+        
+        .sidebar a {
+            padding: 15px 30px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            transition: 0.2s;
+            border-bottom: 1px solid #bbb;
+        }
+        
+        .sidebar a:hover {
+            color: #555;
+            background-color: #ccc;
+        }
+        
+        .sidebar .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 36px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .overlaynav {
+            display: none;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1500;
+        }
+        
+        .visually-hidden {
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            padding: 0 !important;
+            margin: -1px !important;
+            overflow: hidden !important;
+            clip: rect(0, 0, 0, 0) !important;
+            white-space: nowrap !important;
+            border: 0 !important;
+        }
+        
+        footer {
+            font-size: 12px;
+            padding: 10px;
+        }
+        
+        @media screen and (min-width: 769px) {.navbar {width: 55%}}
+    </style>
+</head>
+<body>
+    <div id="mySidebar" class="sidebar">
+        <span class="close-btn" onclick="closeNav()">&times;</span>
+        <a href="https://nteste05.github.io/gemii/" onclick="closeNav()">👽 Lainnya</a>
+        <a href="https://pinterest.com/nteste05" onclick="closeNav()"><img src="pinterest.svg" width="25" height="25" alt="pinterest"> Pinterest</a>
+        <a href="https://x.com/nteste05" onclick="closeNav()"><img src="x.svg" width="25" height="25" alt="x"> X</a>
+    </div>
+    <div id="overlaynav" class="overlaynav" onclick="closeNav()"></div>
+    <nav class="navbar">
+        <div class="menu-btn" onclick="openNav()">&#9776;</div>
+        <header><h1>Base64IE: Aplikasi konversi gambar ke Base64 dan sebaliknya</h1></header>
+    </nav>
+    <div class="container">
+        <p><small>*) file tidak diupload ke server, semua proses terjadi di browser Anda.</small></p>
+        <div class="section">
+            <h3>1. Gambar ➔ Kode</h3>
+            <input type="file" id="upImage" accept="image/*">
+            <textarea id="txtOutput" readonly placeholder="Kode Base64 akan muncul di sini..."></textarea>
+            <button class="btn-copy" onclick="copyText()">Salin Kode</button>
+        </div>
+        <div class="section">
+            <h3>2. Kode ➔ Gambar</h3>
+            <textarea id="txtInput" placeholder="Tempel kode Base64 di sini (diawali data:image/...)"></textarea>
+            <div class="btn-group">
+                <button class="btn-blue" onclick="processDecode()">Lihat Gambar</button>
+                <button id="dlBtn" class="btn-green" style="display:none;" onclick="downloadImage()">Download</button>
+            </div>
+            <img id="preview" alt="Preview">
+        </div>
+    </div>
+<script>
+    document.getElementById('upImage').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                document.getElementById('txtOutput').value = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    function copyText() {
+        const txt = document.getElementById('txtOutput');
+        const textToCopy = txt.value;
+        
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert("Semua teks berhasil disalin!");
+            }).catch(err => {
+                fallbackCopy(textToCopy);
+            });
+        } else {
+            fallbackCopy(textToCopy);
+        }
+    }
+    
+    function fallbackCopy(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        textArea.style.top = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        textArea.setSelectionRange(0, 999999);
+        
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                alert("Semua teks berhasil disalin!");
+            } else {
+                alert("Gagal menyalin, silakan coba lagi.");
+            }
+        } catch (err) {
+            alert("Browser tidak mendukung penyalinan otomatis.");
+        }
+        document.body.removeChild(textArea);
+    }
+    
+    function processDecode() {
+        const code = document.getElementById('txtInput').value.trim();
+        const img = document.getElementById('preview');
+        const dlBtn = document.getElementById('dlBtn');
+        
+        if (code.startsWith('data:image/')) {
+            img.src = code;
+            img.style.display = 'block';
+            dlBtn.style.display = 'inline-block';
+        } else {
+            alert("Kode tidak valid! Pastikan diawali dengan 'data:image/...'");
+        }
+    }
+    
+    function downloadImage() {
+        const code = document.getElementById('preview').src;
+        const extension = code.split(';')[0].split('/')[1] || 'png';
+        const link = document.createElement('a');
+        link.href = code;
+        link.download = `hasil-base64IE.${extension}`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+    
+    const sidebar = document.getElementById("mySidebar");
+    const overlaynav = document.getElementById("overlaynav");
+    
+    function openNav() {
+        sidebar.style.width = "280px";
+        overlaynav.style.display = "block";
+            document.body.style.overflow = "hidden";
+    }
+    
+    function closeNav() {
+        sidebar.style.width = "0";
+        overlaynav.style.display = "none";
+        document.body.style.overflow = "auto";
+    }
+</script>
+<footer>
+    <p>&copy; 2026 <a style="color: inherit; text-decoration: none;" href="https://nteste05.github.io/base64ie/">Base64IE: Aplikasi konversi gambar ke kode teks di Browser.</a> All Rights Reserved.</p>
+        <p class="visually-hidden">Base64IE: Solusi Cepat & Aman Konversi Gambar ke Base64 dan Sebaliknya<br><br>Dalam dunia pengembangan web dan optimasi performa situs, efisiensi adalah segalanya. Seringkali, memuat banyak file gambar kecil secara terpisah dapat memperlambat waktu pemuatan halaman karena banyaknya permintaan HTTP. Di sinilah Base64IE hadir sebagai alat esensial bagi para pengembang web, desainer grafis, dan antusias teknologi untuk menyederhanakan alur kerja mereka.</p>
+        <p class="visually-hidden">Apa Itu Base64IE?<br><strong>Base64IE</strong> adalah aplikasi konverter serbaguna yang dirancang khusus untuk mengubah file gambar menjadi string teks Base64 dan mengembalikan kode Base64 menjadi file gambar utuh secara instan. Dengan antarmuka yang bersih dan minimalis, Base64IE menghilangkan kerumitan teknis, memungkinkan Anda memproses data hanya dengan beberapa klik.</p>
+        <p class="visually-hidden">Fitur Utama Base64IE<br>Konversi Gambar ke Base64 (Encoding):<br>Ubah berbagai format gambar populer seperti PNG, JPG, JPEG, GIF, hingga WebP menjadi skema pengodean binari-ke-teks. Hasil konversi ini dapat langsung Anda tempelkan ke dalam file HTML atau CSS untuk mengurangi latency server.<br>Konversi Base64 ke Gambar (Decoding):<br>Memiliki string kode tapi tidak tahu gambar apa itu? Cukup tempelkan kode tersebut ke dalam Base64IE, dan aplikasi akan merendernya kembali menjadi visual aslinya serta memberikan opsi untuk mengunduhnya ke perangkat Anda.<br>Dukungan Format Luas:<br>Base64IE mendukung hampir semua format gambar standar yang digunakan di web modern, memastikan fleksibilitas tanpa batas bagi penggunanya.<br>Privasi dan Keamanan Terjamin:<br>Kami memahami betapa pentingnya privasi data Anda. Proses konversi di Base64IE dilakukan secara lokal atau melalui jalur terenkripsi, memastikan gambar Anda tidak disalahgunakan oleh pihak ketiga.</p>
+        <p class="visually-hidden">Mengapa Menggunakan Base64 untuk Gambar?<br>Bagi pengembang, menyematkan gambar langsung ke dalam kode (inline images) memiliki beberapa keuntungan strategis:<br>Optimasi Kecepatan: Mengurangi jumlah permintaan HTTP (HTTP Requests) yang harus dilakukan browser ke server.<br>Portabilitas: Memudahkan pengiriman data gambar dalam format JSON atau XML tanpa perlu melampirkan file fisik.<br>Email Marketing: Memastikan logo atau ikon muncul di email tanpa perlu mengandalkan hosting gambar eksternal yang sering kali diblokir oleh klien email.</p>
+        <p class="visually-hidden">Cara Menggunakan Base64IE<br>Penggunaan Base64IE dirancang agar sangat intuitif:<br>Untuk Gambar ke Base64: Pilih file gambar dari perangkat Anda atau seret (drag-and-drop) ke area yang disediakan. Dalam hitungan detik, string Base64 akan muncul dan siap disalin.<br>Untuk Base64 ke Gambar: Tempelkan string kode yang Anda miliki ke kolom teks. Preview gambar akan langsung muncul, dan Anda bisa memilih tombol "Simpan" untuk mengunduh gambar tersebut.</p>
+        <p class="visually-hidden">Siapa yang Membutuhkan Base64IE?<br>Web Developer: Untuk optimasi CSS dan integrasi aset kecil seperti ikon atau loader.<br>Mobile App Developer: Untuk menyimpan gambar kecil dalam database lokal dalam bentuk string teks.<br>Data Analyst: Saat perlu menyisipkan visualisasi ke dalam laporan berbasis teks atau skrip pemrograman.</p>
+        <p class="visually-hidden"><strong>Base64IE bukan sekadar konverter biasa</strong>; ini adalah alat produktivitas yang mengutamakan kecepatan, akurasi, dan kemudahan akses. Berhenti membuang waktu dengan alat yang rumit. Mulailah gunakan Base64IE hari ini untuk transformasi data gambar yang lebih cerdas dan efisien!</p>
+</footer>
+</body>
+</html>
