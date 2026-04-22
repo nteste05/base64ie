@@ -1,0 +1,11 @@
+{
+    "name": "Base64IE: Aplikasi Konversi Gambar",
+    "short_name": "Base64IE",
+    "description": "Base64IE: Aplikasi Konversi gambar ke char ASCII di Browser",
+    "icons": "base64ie-favicon.jpeg",
+    "theme_color": "#2D2D2D",
+    "background_color": "#2D2D2D",
+    "display": "standalone",
+    "start_url": "./index.html",
+    "orientation": "portrait"
+}
